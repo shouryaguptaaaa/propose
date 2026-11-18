@@ -1,128 +1,344 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffeaf2">
-  <title>A Little Question for You 🌷</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+(() => {
+  "use strict";
 
-  <!-- Reusable flower illustration -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <symbol id="flower" viewBox="0 0 100 100">
-        <g fill="#f7a8c6" stroke="#fff" stroke-width="1.5">
-          <ellipse cx="50" cy="22" rx="13" ry="21"/>
-          <ellipse cx="50" cy="22" rx="13" ry="21" transform="rotate(60 50 50)"/>
-          <ellipse cx="50" cy="22" rx="13" ry="21" transform="rotate(120 50 50)"/>
-          <ellipse cx="50" cy="22" rx="13" ry="21" transform="rotate(180 50 50)"/>
-          <ellipse cx="50" cy="22" rx="13" ry="21" transform="rotate(240 50 50)"/>
-          <ellipse cx="50" cy="22" rx="13" ry="21" transform="rotate(300 50 50)"/>
-        </g>
-        <circle cx="50" cy="50" r="11" fill="#ffe08a"/>
-        <circle cx="50" cy="50" r="5" fill="#f4b942"/>
-      </symbol>
-    </defs>
-  </svg>
+  const $ = (id) => document.getElementById(id);
+  const rand = (min, max) => Math.random() * (max - min) + min;
+  const isSmall = window.matchMedia("(max-width: 500px)").matches;
 
-  <div class="glow glow-a" aria-hidden="true"></div>
-  <div class="glow glow-b" aria-hidden="true"></div>
-  <div id="petals" class="petals" aria-hidden="true"></div>
+  /* ---------- 100 reasons ---------- */
+  const reasons = [
+    "Because your smile can turn my whole day around. 🌷",
+    "Because talking to you makes time feel lighter. 💗",
+    "Because you are kind in ways you don't even notice. ✨",
+    "Because your laughter is my favourite sound. 🌸",
+    "Because you make ordinary moments feel special. 💌",
+    "Because I feel like myself around you. 🌼",
+    "Because you listen with your whole heart. 💗",
+    "Because your presence feels like home. 🏡",
+    "Because you care deeply about the people around you. 🌷",
+    "Because I have never met anyone quite like you. ✨",
+    "Because your eyes say so much without words. 💫",
+    "Because you make me want to be a better person. 🌱",
+    "Because even your silence feels comforting. 🕊️",
+    "Because you are beautiful, inside and out. 🌸",
+    "Because you remember the little things. 💭",
+    "Because you bring calm to my chaos. 🌊",
+    "Because every memory with you is one I treasure. 📷",
+    "Because your encouragement means more than you know. 💪",
+    "Because you make hard days feel easier. ☀️",
+    "Because your kindness is truly rare. 🌹",
+    "Because you are strong, even when you don't feel it. 🌿",
+    "Because the way you talk about your dreams inspires me. 🌟",
+    "Because you make me laugh at the silliest things. 😄",
+    "Because you are patient with the people you love. 💞",
+    "Because I look forward to your messages. 📱",
+    "Because you have a gentle heart. 🕊️",
+    "Because you make simple plans feel like adventures. 🗺️",
+    "Because I'm grateful that our paths crossed. 🍀",
+    "Because you deserve to hear how special you are. 💖",
+    "Because your honesty is something I deeply respect. 🤍",
+    "Because you see the good in people. 🌻",
+    "Because your voice is my favourite comfort. 🎶",
+    "Because you make the world feel softer. ☁️",
+    "Because you are truly one of a kind. 💎",
+    "Because I smile every time I think of you. 😊",
+    "Because you are graceful even in small moments. 🦋",
+    "Because you make me feel understood. 💬",
+    "Because your little habits are secretly my favourites. 🌷",
+    "Because you light up every room you walk into. 💡",
+    "Because you deserve flowers, not just on special days. 💐",
+    "Because you work hard and rarely ask for credit. 🌾",
+    "Because you are brave in quiet ways. 🦢",
+    "Because being around you feels peaceful. 🍃",
+    "Because you have a wonderful sense of humour. 😂",
+    "Because your warmth makes everyone feel welcome. 🔆",
+    "Because you are the best part of my ordinary days. 🌤️",
+    "Because you make me believe in good things. 🌈",
+    "Because you are thoughtful without even trying. 🎁",
+    "Because I admire how you keep going. 🌄",
+    "Because we're halfway through and I still have so much to say about you. 💗",
+    "Because you are worth taking a chance on. 🎲",
+    "Because your happiness matters to me. 🌸",
+    "Because you make me feel lucky. 🍀",
+    "Because you bring out the best in everyone around you. ✨",
+    "Because your kindness to strangers says everything about you. 🤝",
+    "Because I trust you. 🔐",
+    "Because you make every conversation meaningful. 💬",
+    "Because you have a beautiful way of seeing the world. 🔭",
+    "Because you are my favourite person to talk to. 📞",
+    "Because I want to celebrate your wins, big and small. 🎉",
+    "Because you make me curious about everything you love. 📚",
+    "Because your presence makes me feel safe. 🛡️",
+    "Because you have the sweetest way of caring. 🍯",
+    "Because I'd rather be honest and brave than regret staying quiet. 💌",
+    "Because you deserve someone who appreciates you fully. 🌹",
+    "Because you make time feel precious. ⏳",
+    "Because you are a gift to the people who know you. 🎀",
+    "Because you are enough, exactly as you are. 💗",
+    "Because your smile stays with me long after we talk. 🌷",
+    "Because you make even tough days brighter. 🌞",
+    "Because you inspire me without even trying. 🌟",
+    "Because I love how real you are. 🤍",
+    "Because you are gentle and strong at the same time. 🌿",
+    "Because I've learned so much just by knowing you. 📖",
+    "Because you make me want to hold onto good moments. 📸",
+    "Because your goodness is genuine. 🌼",
+    "Because you make the little things feel magical. 🪄",
+    "Because I would love to make you smile every day. 😊",
+    "Because you are someone worth waiting for. 🕰️",
+    "Because you have become important to me. 💞",
+    "Because your kindness changes people. 🌸",
+    "Because you carry yourself with such grace. 🦋",
+    "Because with you, even silence feels full. 🌙",
+    "Because you deserve all the happiness in the world. 🌍",
+    "Because I want to keep making memories with you. 📷",
+    "Because you are more special than these words can say. 💖",
+    "Because you make my heart feel light. 🎈",
+    "Because you are sincere in a world of pretending. 🌻",
+    "Because I'm thankful for every moment with you. 🙏",
+    "Because you make me hopeful about tomorrow. 🌅",
+    "Because you are lovely in ways that go beyond looks. 💐",
+    "Because I could never run out of reasons. ♾️",
+    "Because you deserve a love that feels gentle and true. 🕊️",
+    "Because you have made my life brighter. ☀️",
+    "Because my feelings for you are honest and real. 💗",
+    "Because you are worth every flower in this garden. 🌺",
+    "Because I would choose to know you again in any world. 🌌",
+    "Because you're almost at the end, and I'm still smiling. 😊",
+    "Because there's always one more reason waiting. 🌷",
+    "Because you are, simply, you, and that is wonderful. 💖"
+  ];
+  const TOTAL = 100;
 
-  <!-- Music player -->
-  <button id="musicBtn" class="music-btn" type="button" aria-label="Play music">
-    <span class="music-icon" aria-hidden="true">♫</span>
-    <span id="musicLabel" class="music-label">Play music</span>
-  </button>
-  <audio id="bgMusic" src="assets/music/music.mp3" loop preload="none"></audio>
+  /* ---------- Elements ---------- */
+  const card = $("card");
+  const yesBtn = $("yesBtn");
+  const noBtn = $("noBtn");
+  const reasonBox = $("reasonBox");
+  const reasonText = $("reasonText");
+  const counter = $("counter");
+  const bar = $("bar");
+  const finalMsg = $("finalMsg");
+  const success = $("success");
+  const successClose = $("successClose");
+  const heartsLayer = $("hearts");
 
-  <main class="page">
+  /* ---------- Falling petals ---------- */
+  (function makePetals() {
+    const wrap = $("petals");
+    const icons = ["🌸", "🌷", "💮", "🌺", "🌸"];
+    const count = isSmall ? 10 : 18;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement("span");
+      p.className = "petal";
+      p.textContent = icons[i % icons.length];
+      p.style.left = rand(0, 100) + "%";
+      p.style.fontSize = rand(14, 26) + "px";
+      p.style.animationDuration = rand(11, 20) + "s";
+      p.style.animationDelay = -rand(0, 18) + "s";
+      p.style.setProperty("--drift", rand(-60, 80) + "px");
+      frag.appendChild(p);
+    }
+    wrap.appendChild(frag);
+  })();
 
-    <!-- Hero -->
-    <header class="hero">
-      <svg class="hero-flower" aria-hidden="true"><use href="#flower"/></svg>
-      <p class="eyebrow">A little something made just for you</p>
-      <h1>Will you make my day <span class="script">special?</span></h1>
-      <p class="intro">I have a question to ask… and I hope it makes you smile.</p>
-    </header>
+  /* ---------- Gallery: entrance animation ---------- */
+  const gallery = $("gallery");
+  const figures = Array.from(gallery.querySelectorAll("figure"));
 
-    <!-- Gallery -->
-    <section class="section" aria-labelledby="memTitle">
-      <h2 id="memTitle" class="section-title">Little moments 🌸</h2>
-      <div id="gallery" class="gallery">
-        <figure data-name="a.jpg"><img src="assets/images/a.jpg" alt="Memory 1" loading="lazy" decoding="async"></figure>
-        <figure data-name="b.jpg"><img src="assets/images/b.jpg" alt="Memory 2" loading="lazy" decoding="async"></figure>
-        <figure data-name="c.jpg"><img src="assets/images/c.jpg" alt="Memory 3" loading="lazy" decoding="async"></figure>
-        <figure data-name="d.jpg"><img src="assets/images/d.jpg" alt="Memory 4" loading="lazy" decoding="async"></figure>
-        <figure data-name="e.jpg"><img src="assets/images/e.jpg" alt="Memory 5" loading="lazy" decoding="async"></figure>
-        <figure data-name="f.jpg"><img src="assets/images/f.jpg" alt="Memory 6" loading="lazy" decoding="async"></figure>
-        <figure data-name="g.jpg"><img src="assets/images/g.jpg" alt="Memory 7" loading="lazy" decoding="async"></figure>
-      </div>
-    </section>
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("show");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    figures.forEach((f, i) => {
+      f.style.transitionDelay = (i % 3) * 90 + "ms";
+      io.observe(f);
+    });
+  } else {
+    figures.forEach((f) => f.classList.add("show"));
+  }
 
-    <!-- Proposal card -->
-    <section class="section" aria-labelledby="askTitle">
-      <div id="card" class="card">
-        <svg class="corner corner-tl" aria-hidden="true"><use href="#flower"/></svg>
-        <svg class="corner corner-br" aria-hidden="true"><use href="#flower"/></svg>
+  // If an image file is missing, show a pink placeholder with its filename
+  figures.forEach((f) => {
+    const img = f.querySelector("img");
+    img.addEventListener("error", () => f.classList.add("missing"));
+  });
 
-        <p class="script card-script">with all my heart</p>
-        <h2 id="askTitle" class="card-title">Will you say yes?</h2>
-        <p class="subtext">You make ordinary days feel softer and brighter. Whatever your answer, thank you for hearing me out.</p>
+  /* ---------- Lightbox ---------- */
+  const lightbox = $("lightbox");
+  const lbImg = $("lbImg");
+  const lbCap = $("lbCap");
+  let current = 0;
+  let touchX = null;
 
-        <div id="reasonBox" class="reason-box" hidden>
-          <div class="counter-row">
-            <span id="counter" class="counter">0 / 100</span>
-          </div>
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div id="bar" class="bar"></div>
-          </div>
-          <p id="reasonText" class="reason-text" aria-live="polite"></p>
-        </div>
+  function showPhoto(i) {
+    current = (i + figures.length) % figures.length;
+    const img = figures[current].querySelector("img");
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    lbCap.textContent = (current + 1) + " / " + figures.length;
+    lbImg.style.animation = "none";
+    void lbImg.offsetWidth;
+    lbImg.style.animation = "";
+  }
+  function openLightbox(i) {
+    if (figures[i].classList.contains("missing")) return;
+    showPhoto(i);
+    lightbox.hidden = false;
+    document.body.style.overflow = "hidden";
+    $("lbClose").focus();
+  }
+  function closeLightbox() {
+    lightbox.hidden = true;
+    lbImg.src = "";
+    document.body.style.overflow = "";
+  }
+  function step(dir) {
+    let i = current;
+    for (let n = 0; n < figures.length; n++) {
+      i = (i + dir + figures.length) % figures.length;
+      if (!figures[i].classList.contains("missing")) { showPhoto(i); return; }
+    }
+  }
 
-        <div id="finalMsg" class="final-msg" hidden>
-          <p>💗 You've read all 100 reasons now.</p>
-          <p>Whatever you choose is completely yours, and I'll respect it. Thank you for giving this your time. Both buttons are still here for you.</p>
-        </div>
+  figures.forEach((f, i) => f.addEventListener("click", () => openLightbox(i)));
+  $("lbClose").addEventListener("click", closeLightbox);
+  $("lbPrev").addEventListener("click", () => step(-1));
+  $("lbNext").addEventListener("click", () => step(1));
+  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+  lightbox.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+  lightbox.addEventListener("touchend", (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+    touchX = null;
+  });
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.hidden) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
+    } else if (!success.hidden && e.key === "Escape") {
+      closeSuccess();
+    }
+  });
 
-        <div class="actions">
-          <button id="yesBtn" class="btn yes-btn" type="button">Yes 💗</button>
-          <button id="noBtn" class="btn no-btn" type="button">No</button>
-        </div>
-      </div>
-    </section>
+  /* ---------- Music player ---------- */
+  const music = $("bgMusic");
+  const musicBtn = $("musicBtn");
+  const musicLabel = $("musicLabel");
 
-    <footer class="footer">Made with care, flowers &amp; a little courage 🌷</footer>
-  </main>
+  function setMusicUI(playing) {
+    musicBtn.classList.toggle("playing", playing);
+    musicLabel.textContent = playing ? "Pause music" : "Play music";
+    musicBtn.setAttribute("aria-label", playing ? "Pause music" : "Play music");
+  }
+  musicBtn.addEventListener("click", async () => {
+    if (music.paused) {
+      try {
+        await music.play();
+        setMusicUI(true);
+      } catch (err) {
+        setMusicUI(false);
+        musicLabel.textContent = "Add music.mp3";
+      }
+    } else {
+      music.pause();
+      setMusicUI(false);
+    }
+  });
+  music.addEventListener("pause", () => setMusicUI(false));
+  music.addEventListener("play", () => setMusicUI(true));
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo preview" hidden>
-    <button id="lbClose" class="lb-btn lb-close" type="button" aria-label="Close">✕</button>
-    <button id="lbPrev" class="lb-btn lb-prev" type="button" aria-label="Previous photo">‹</button>
-    <figure class="lb-figure">
-      <img id="lbImg" src="" alt="">
-      <figcaption id="lbCap" class="lb-cap"></figcaption>
-    </figure>
-    <button id="lbNext" class="lb-btn lb-next" type="button" aria-label="Next photo">›</button>
-  </div>
+  /* ---------- NO button: 100 unique reasons ---------- */
+  // Shuffled once so reasons never repeat before all 100 are shown
+  const order = reasons.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
 
-  <!-- YES success screen -->
-  <div id="success" class="success" role="dialog" aria-modal="true" aria-labelledby="successTitle" hidden>
-    <div id="hearts" class="hearts" aria-hidden="true"></div>
-    <div class="success-card">
-      <svg class="success-flower" aria-hidden="true"><use href="#flower"/></svg>
-      <h2 id="successTitle" class="success-title">Thank you 💖</h2>
-      <p class="success-text">You just made me the happiest person today. I promise to make you smile, every single day.</p>
-      <p class="success-sub">This moment is going to stay with me forever. 🌷</p>
-      <button id="successClose" class="btn yes-btn" type="button">Back to our memories</button>
-    </div>
-  </div>
+  let noCount = 0;
+  let answered = false;
 
-  <script src="script.js"></script>
-</body>
-</html>
+  function playfulMove() {
+    // Small move that always keeps the button visible and tappable
+    const maxRight = isSmall ? 26 : 70;
+    const x = rand(-6, maxRight);
+    const y = rand(-8, 14);
+    noBtn.style.setProperty("--tx", x.toFixed(0) + "px");
+    noBtn.style.setProperty("--ty", y.toFixed(0) + "px");
+  }
+
+  noBtn.addEventListener("click", () => {
+    if (answered) return;
+    reasonBox.hidden = false;
+
+    if (noCount < TOTAL) {
+      noCount++;
+      const text = reasons[order[noCount - 1] % reasons.length];
+      reasonText.textContent = text;
+      counter.textContent = noCount + " / " + TOTAL;
+      bar.style.width = (noCount / TOTAL * 100) + "%";
+      bar.parentElement.setAttribute("aria-valuenow", String(noCount));
+
+      reasonText.classList.remove("swap");
+      void reasonText.offsetWidth;
+      reasonText.classList.add("swap");
+
+      if (noCount === TOTAL) {
+        finalMsg.hidden = false;
+        noBtn.textContent = "No";
+      }
+    }
+    playfulMove();
+  });
+
+  /* ---------- YES button ---------- */
+  function makeHearts() {
+    heartsLayer.textContent = "";
+    const icons = ["💗", "🌸", "💖", "🌷", "💕", "🌺"];
+    const count = isSmall ? 22 : 36;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement("span");
+      h.className = "heart";
+      h.textContent = icons[i % icons.length];
+      h.style.left = rand(0, 100) + "%";
+      h.style.fontSize = rand(18, 38) + "px";
+      h.style.animationDuration = rand(5, 10) + "s";
+      h.style.animationDelay = -rand(0, 8) + "s";
+      h.style.setProperty("--drift", rand(-60, 60) + "px");
+      frag.appendChild(h);
+    }
+    heartsLayer.appendChild(frag);
+  }
+
+  function closeSuccess() {
+    success.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  yesBtn.addEventListener("click", () => {
+    if (!answered) {
+      answered = true; // locks the result: NO can no longer change anything
+      card.classList.add("answered");
+      reasonBox.hidden = true;
+      finalMsg.hidden = true;
+      noBtn.disabled = true;
+      yesBtn.textContent = "You said yes 💗";
+      yesBtn.disabled = true;
+    }
+    makeHearts();
+    success.hidden = false;
+    document.body.style.overflow = "hidden";
+    successClose.focus();
+  });
+  successClose.addEventListener("click", closeSuccess);
+})();
