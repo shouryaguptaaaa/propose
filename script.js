@@ -170,7 +170,7 @@
     img.addEventListener("error", () => f.classList.add("missing"));
   });
 
-  /* ---------- Lightbox ---------- */
+  /* ---------- Lightbox (photo + caption) ---------- */
   const lightbox = $("lightbox");
   const lbImg = $("lbImg");
   const lbCap = $("lbCap");
@@ -179,10 +179,12 @@
 
   function showPhoto(i) {
     current = (i + figures.length) % figures.length;
-    const img = figures[current].querySelector("img");
+    const fig = figures[current];
+    const img = fig.querySelector("img");
+    const cap = fig.querySelector("figcaption");
     lbImg.src = img.currentSrc || img.src;
     lbImg.alt = img.alt;
-    lbCap.textContent = (current + 1) + " / " + figures.length;
+    lbCap.textContent = (cap ? cap.textContent : "") + "  (" + (current + 1) + "/" + figures.length + ")";
     lbImg.style.animation = "none";
     void lbImg.offsetWidth;
     lbImg.style.animation = "";
@@ -294,7 +296,6 @@
 
       if (noCount === TOTAL) {
         finalMsg.hidden = false;
-        noBtn.textContent = "No";
       }
     }
     playfulMove();
@@ -337,8 +338,43 @@
     }
     makeHearts();
     success.hidden = false;
+    success.scrollTop = 0;
     document.body.style.overflow = "hidden";
     successClose.focus();
   });
   successClose.addEventListener("click", closeSuccess);
+
+  /* ---------- Reply to Shourya (no backend: WhatsApp share / copy) ---------- */
+  const replyText = $("replyText");
+  const replyNote = $("replyNote");
+
+  function getReply() {
+    const t = replyText.value.trim();
+    if (!t) {
+      replyNote.textContent = "Pehle kuch likh do 💗";
+      replyText.focus();
+      return null;
+    }
+    return "Shourya ke liye, Siya ki taraf se 💗\n\n" + t;
+  }
+
+  $("replyWA").addEventListener("click", () => {
+    const msg = getReply();
+    if (!msg) return;
+    // Opens WhatsApp with the message ready; she picks the contact herself
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
+    replyNote.textContent = "WhatsApp khul gaya, Shourya ko select karke bhej do 💌";
+  });
+
+  $("replyCopy").addEventListener("click", async () => {
+    const msg = getReply();
+    if (!msg) return;
+    try {
+      await navigator.clipboard.writeText(msg);
+      replyNote.textContent = "Copy ho gaya ✅ Ab kahin bhi paste karke bhej sakti ho.";
+    } catch (err) {
+      replyText.select();
+      replyNote.textContent = "Text select ho gaya, ab copy kar lo.";
+    }
+  });
 })();
