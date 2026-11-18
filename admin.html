@@ -1,34 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Guide</title>
-<style>
-*{box-sizing:border-box}body{margin:0;padding:24px;background:#fff3f7;color:#61384c;font:15px Arial,sans-serif}
-main{max-width:680px;margin:30px auto;background:white;padding:28px;border-radius:20px;box-shadow:0 12px 35px #b95d8520}
-h1{color:#b84f7c}li{margin:12px 0;line-height:1.5}code{background:#fff0f5;padding:3px 6px;border-radius:5px}
-.note{padding:12px;background:#fff4f8;border-left:4px solid #e978a4;border-radius:8px}
-a{color:#b84f7c}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Admin Guide 🌷</title>
+  <style>
+    :root{--pink:#e978a4;--deep:#b84f7c;--ink:#5b3548;--muted:#93677b}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);
+      background:linear-gradient(145deg,#fffafd,#ffeaf2 55%,#fff7fa);background-attachment:fixed;line-height:1.6}
+    .wrap{width:min(820px,92%);margin:0 auto;padding:28px 0 50px}
+    h1{font-family:Georgia,'Times New Roman',serif;color:#a94470;font-size:clamp(28px,6vw,40px);margin:0 0 6px}
+    h2{color:#a94470;font-size:20px;margin:0 0 10px}
+    p{margin:0 0 10px}
+    .lead{color:var(--muted)}
+    .note{background:#fff;border:1px solid #f3bcd1;border-left:5px solid var(--pink);border-radius:14px;padding:14px 16px;margin:18px 0}
+    .card{background:#ffffffe6;border:1px solid #f6c8d9;border-radius:20px;padding:18px;margin:16px 0;box-shadow:0 10px 30px #c96d921a}
+    ol,ul{margin:0 0 10px;padding-left:22px}
+    li{margin:4px 0}
+    code{background:#ffeaf2;color:#a03c6b;padding:2px 6px;border-radius:6px;font-size:.92em}
+    pre{background:#3d1a2c;color:#ffe3ee;padding:14px;border-radius:14px;overflow:auto;font-size:13px;margin:8px 0}
+    pre code{background:none;color:inherit;padding:0}
+    button{font:600 14px system-ui,sans-serif;border:0;border-radius:999px;padding:10px 18px;min-height:42px;cursor:pointer;
+      background:linear-gradient(135deg,#ed8bb0,#d65e91);color:#fff}
+    button.ghost{background:#fff;color:#a85c7b;border:1px solid #efbfd1}
+    textarea{width:100%;min-height:140px;border:1px solid #efbfd1;border-radius:14px;padding:12px;font:14px system-ui,sans-serif;color:var(--ink)}
+    .status{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+    .status li{background:#fff;border:1px solid #f3d3df;border-radius:12px;padding:8px 12px;font-size:14px}
+    .ok{color:#2e7d4f}.bad{color:#c0392b}
+    .stat{font-weight:700;color:var(--deep)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    a{color:var(--deep)}
+    details{margin:8px 0}
+    summary{cursor:pointer;font-weight:600;color:#a94470}
+  </style>
 </head>
 <body>
-<main>
-<h1>Website Admin Guide 🌸</h1>
-<p>This simple admin page explains how to update the proposal website files.</p>
-<h3>Change the photos</h3>
-<ol>
-<li>Open <code>assets/images/</code>.</li>
-<li>Replace the sample files with your own photos, keeping the exact names <code>a.jpg</code> through <code>g.jpg</code>.</li>
-<li>Keep the same JPG format and spelling.</li>
-</ol>
-<h3>Change the music</h3>
-<ol>
-<li>Open <code>assets/music/</code>.</li>
-<li>Put your audio file there and name it <code>music.mp3</code>.</li>
-</ol>
-<p class="note">This is a static website. There is no online login, database, or remote admin panel in this lightweight version. Edit the files in the repository to update the site.</p>
-<p><a href="index.html">← Open the website</a></p>
-</main>
+  <div class="wrap">
+    <h1>Admin Guide 🌷</h1>
+    <p class="lead">Is website ko customize karne ki simple guide.</p>
+
+    <div class="note">
+      <strong>Zaroori baat:</strong> ye website <strong>static</strong> hai. Isme koi login, database ya backend nahi hai.
+      Is page se kuch save ya upload nahi hota. Content badalne ke liye files ko GitHub mein edit ya upload karna padta hai.
+      Is page ka kaam sirf guide dena aur files check karna hai.
+    </div>
+
+    <!-- File checker -->
+    <section class="card">
+      <h2>1. File check</h2>
+      <p>Ye check karta hai ki saari 7 photos aur music file sahi jagah par mil rahi hain ya nahi.</p>
+      <ul id="status" class="status"></ul>
+      <div class="row">
+        <button id="recheck" type="button">Dobara check karo</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Saari 7 photos badalna</h2>
+      <ol>
+        <li>Apni 7 photos ke naam bilkul aise rakho: <code>a.jpg</code>, <code>b.jpg</code>, <code>c.jpg</code>, <code>d.jpg</code>, <code>e.jpg</code>, <code>f.jpg</code>, <code>g.jpg</code></li>
+        <li>GitHub repo <code>propose</code> mein <code>assets/images/</code> folder kholo.</li>
+        <li><strong>Add file → Upload files</strong> dabao aur photos select karo.</li>
+        <li>Same naam ki file pehle se hai to wo replace ho jaati hai. <strong>Commit changes</strong> dabao.</li>
+        <li>1 to 2 minute baad site refresh karo. Purani photo dikhe to cache clear karo ya page hard refresh karo.</li>
+      </ol>
+      <p><strong>Tip:</strong> Mobile par site tez chale, iske liye har photo 1 MB se chhoti rakho. Extension sirf <code>.jpg</code> hona chahiye, <code>.jpeg</code> ya <code>.png</code> nahi.</p>
+    </section>
+
+    <section class="card">
+      <h2>3. Music upload karna</h2>
+      <ol>
+        <li>Apni song file ka naam <code>music.mp3</code> rakho.</li>
+        <li>GitHub mein <code>assets/music/</code> folder kholo.</li>
+        <li><strong>Add file → Upload files</strong> se <code>music.mp3</code> upload karo aur commit karo.</li>
+      </ol>
+      <p>Music apne aap nahi bajta. Visitor ko neeche wala music button dabana padta hai, ye browsers ka rule hai. File 5 MB ke aaspaas rakho taaki jaldi load ho.</p>
+    </section>
+
+    <section class="card">
+      <h2>4. Proposal ka message edit karna</h2>
+      <p>Ye teen jagah <code>index.html</code> mein hain. GitHub mein file kholo, pencil icon dabao, text badlo aur commit karo.</p>
+      <details open>
+        <summary>Main heading aur intro</summary>
+        <pre><code>&lt;h1&gt;Will you make my day &lt;span class="script"&gt;special?&lt;/span&gt;&lt;/h1&gt;
+&lt;p class="intro"&gt;I have a question to ask… and I hope it makes you smile.&lt;/p&gt;</code></pre>
+      </details>
+      <details>
+        <summary>Proposal card ka sawaal aur message</summary>
+        <pre><code>&lt;h2 id="askTitle" class="card-title"&gt;Will you say yes?&lt;/h2&gt;
+&lt;p class="subtext"&gt;Yahan apna emotional message likho.&lt;/p&gt;</code></pre>
+      </details>
+      <details>
+        <summary>YES dabane ke baad wala thank-you message</summary>
+        <pre><code>&lt;h2 id="successTitle" class="success-title"&gt;Thank you 💖&lt;/h2&gt;
+&lt;p class="success-text"&gt;Yahan special message likho.&lt;/p&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>5. 100 reasons customize karna</h2>
+      <p>Saare reasons <code>script.js</code> mein <code>const reasons = [ ... ];</code> ke andar hain. Rules:</p>
+      <ul>
+        <li>Exactly <strong>100</strong> reasons hone chahiye, na kam na zyada.</li>
+        <li>Har reason alag hona chahiye. Repeat nahi hona chahiye.</li>
+        <li>Har line quotes mein ho aur line ke end mein comma ho.</li>
+      </ul>
+      <p>Neeche apne reasons ek line mein ek likho. Tool count karega, duplicates dikhayega aur paste karne layak code bana dega.</p>
+      <textarea id="reasonsInput" placeholder="Because your smile brightens my day.&#10;Because you are kind.&#10;..."></textarea>
+      <p>Count: <span id="rCount" class="stat">0 / 100</span> <span id="rWarn" class="bad"></span></p>
+      <div class="row">
+        <button id="rBuild" type="button">Code banao</button>
+        <button id="rCopy" class="ghost" type="button">Code copy karo</button>
+      </div>
+      <pre><code id="rOut">// Yahan generated code aayega</code></pre>
+      <p>Phir <code>script.js</code> mein purana <code>const reasons = [ ... ];</code> poora hatao aur ye naya block paste karo.</p>
+    </section>
+
+    <section class="card">
+      <h2>6. Baaki website content update karna</h2>
+      <ul>
+        <li><strong>Rang aur design:</strong> <code>style.css</code> ke top par <code>:root</code> mein colors hain.</li>
+        <li><strong>Page ka title:</strong> <code>index.html</code> ka <code>&lt;title&gt;</code> tag.</li>
+        <li><strong>Footer text:</strong> <code>index.html</code> mein <code>class="footer"</code>.</li>
+        <li><strong>Photo caption ya alt text:</strong> <code>index.html</code> mein har <code>&lt;img alt="..."&gt;</code>.</li>
+      </ul>
+      <p>Har change ke baad GitHub mein <strong>Commit changes</strong> dabao. GitHub Pages 1 se 2 minute mein site update kar deta hai.</p>
+    </section>
+
+    <section class="card">
+      <h2>7. Deploy ya update ka quick flow</h2>
+      <ol>
+        <li>Repo: <code>shouryaguptaaaa/propose</code></li>
+        <li>Settings → Pages → Branch <code>main</code> → folder <code>/ (root)</code> → Save.</li>
+        <li>Site link: <a href="https://shouryaguptaaaa.github.io/propose/" target="_blank" rel="noopener">https://shouryaguptaaaa.github.io/propose/</a></li>
+        <li>Codespaces mein ho to terminal mein ye chalao:</li>
+      </ol>
+      <pre><code>git add .
+git commit -m "Update website"
+git push</code></pre>
+    </section>
+
+    <p class="lead" style="text-align:center;margin-top:24px"><a href="index.html">← Website par wapas jao</a></p>
+  </div>
+
+  <script src="admin.js"></script>
 </body>
 </html>
