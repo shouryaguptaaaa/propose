@@ -1,380 +1,456 @@
-(() => {
-  "use strict";
 
-  const $ = (id) => document.getElementById(id);
-  const rand = (min, max) => Math.random() * (max - min) + min;
-  const isSmall = window.matchMedia("(max-width: 500px)").matches;
+:root {
+  --pink: #ed75a5;
+  --dark-pink: #d94f88;
+  --light-pink: #fff0f5;
+  --white: #ffffff;
+  --text: #563746;
+  --muted: #987b89;
+  --shadow: 0 15px 45px rgba(194, 93, 135, 0.12);
+}
 
-  /* ---------- 100 reasons ---------- */
-  const reasons = [
-    "Because your smile can turn my whole day around. 🌷",
-    "Because talking to you makes time feel lighter. 💗",
-    "Because you are kind in ways you don't even notice. ✨",
-    "Because your laughter is my favourite sound. 🌸",
-    "Because you make ordinary moments feel special. 💌",
-    "Because I feel like myself around you. 🌼",
-    "Because you listen with your whole heart. 💗",
-    "Because your presence feels like home. 🏡",
-    "Because you care deeply about the people around you. 🌷",
-    "Because I have never met anyone quite like you. ✨",
-    "Because your eyes say so much without words. 💫",
-    "Because you make me want to be a better person. 🌱",
-    "Because even your silence feels comforting. 🕊️",
-    "Because you are beautiful, inside and out. 🌸",
-    "Because you remember the little things. 💭",
-    "Because you bring calm to my chaos. 🌊",
-    "Because every memory with you is one I treasure. 📷",
-    "Because your encouragement means more than you know. 💪",
-    "Because you make hard days feel easier. ☀️",
-    "Because your kindness is truly rare. 🌹",
-    "Because you are strong, even when you don't feel it. 🌿",
-    "Because the way you talk about your dreams inspires me. 🌟",
-    "Because you make me laugh at the silliest things. 😄",
-    "Because you are patient with the people you love. 💞",
-    "Because I look forward to your messages. 📱",
-    "Because you have a gentle heart. 🕊️",
-    "Because you make simple plans feel like adventures. 🗺️",
-    "Because I'm grateful that our paths crossed. 🍀",
-    "Because you deserve to hear how special you are. 💖",
-    "Because your honesty is something I deeply respect. 🤍",
-    "Because you see the good in people. 🌻",
-    "Because your voice is my favourite comfort. 🎶",
-    "Because you make the world feel softer. ☁️",
-    "Because you are truly one of a kind. 💎",
-    "Because I smile every time I think of you. 😊",
-    "Because you are graceful even in small moments. 🦋",
-    "Because you make me feel understood. 💬",
-    "Because your little habits are secretly my favourites. 🌷",
-    "Because you light up every room you walk into. 💡",
-    "Because you deserve flowers, not just on special days. 💐",
-    "Because you work hard and rarely ask for credit. 🌾",
-    "Because you are brave in quiet ways. 🦢",
-    "Because being around you feels peaceful. 🍃",
-    "Because you have a wonderful sense of humour. 😂",
-    "Because your warmth makes everyone feel welcome. 🔆",
-    "Because you are the best part of my ordinary days. 🌤️",
-    "Because you make me believe in good things. 🌈",
-    "Because you are thoughtful without even trying. 🎁",
-    "Because I admire how you keep going. 🌄",
-    "Because we're halfway through and I still have so much to say about you. 💗",
-    "Because you are worth taking a chance on. 🎲",
-    "Because your happiness matters to me. 🌸",
-    "Because you make me feel lucky. 🍀",
-    "Because you bring out the best in everyone around you. ✨",
-    "Because your kindness to strangers says everything about you. 🤝",
-    "Because I trust you. 🔐",
-    "Because you make every conversation meaningful. 💬",
-    "Because you have a beautiful way of seeing the world. 🔭",
-    "Because you are my favourite person to talk to. 📞",
-    "Because I want to celebrate your wins, big and small. 🎉",
-    "Because you make me curious about everything you love. 📚",
-    "Because your presence makes me feel safe. 🛡️",
-    "Because you have the sweetest way of caring. 🍯",
-    "Because I'd rather be honest and brave than regret staying quiet. 💌",
-    "Because you deserve someone who appreciates you fully. 🌹",
-    "Because you make time feel precious. ⏳",
-    "Because you are a gift to the people who know you. 🎀",
-    "Because you are enough, exactly as you are. 💗",
-    "Because your smile stays with me long after we talk. 🌷",
-    "Because you make even tough days brighter. 🌞",
-    "Because you inspire me without even trying. 🌟",
-    "Because I love how real you are. 🤍",
-    "Because you are gentle and strong at the same time. 🌿",
-    "Because I've learned so much just by knowing you. 📖",
-    "Because you make me want to hold onto good moments. 📸",
-    "Because your goodness is genuine. 🌼",
-    "Because you make the little things feel magical. 🪄",
-    "Because I would love to make you smile every day. 😊",
-    "Because you are someone worth waiting for. 🕰️",
-    "Because you have become important to me. 💞",
-    "Because your kindness changes people. 🌸",
-    "Because you carry yourself with such grace. 🦋",
-    "Because with you, even silence feels full. 🌙",
-    "Because you deserve all the happiness in the world. 🌍",
-    "Because I want to keep making memories with you. 📷",
-    "Because you are more special than these words can say. 💖",
-    "Because you make my heart feel light. 🎈",
-    "Because you are sincere in a world of pretending. 🌻",
-    "Because I'm thankful for every moment with you. 🙏",
-    "Because you make me hopeful about tomorrow. 🌅",
-    "Because you are lovely in ways that go beyond looks. 💐",
-    "Because I could never run out of reasons. ♾️",
-    "Because you deserve a love that feels gentle and true. 🕊️",
-    "Because you have made my life brighter. ☀️",
-    "Because my feelings for you are honest and real. 💗",
-    "Because you are worth every flower in this garden. 🌺",
-    "Because I would choose to know you again in any world. 🌌",
-    "Because you're almost at the end, and I'm still smiling. 😊",
-    "Because there's always one more reason waiting. 🌷",
-    "Because you are, simply, you, and that is wonderful. 💖"
-  ];
-  const TOTAL = 100;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* ---------- Elements ---------- */
-  const card = $("card");
-  const yesBtn = $("yesBtn");
-  const noBtn = $("noBtn");
-  const reasonBox = $("reasonBox");
-  const reasonText = $("reasonText");
-  const counter = $("counter");
-  const bar = $("bar");
-  const finalMsg = $("finalMsg");
-  const success = $("success");
-  const successClose = $("successClose");
-  const heartsLayer = $("hearts");
+html {
+  scroll-behavior: smooth;
+}
 
-  /* ---------- Falling petals ---------- */
-  (function makePetals() {
-    const wrap = $("petals");
-    const icons = ["🌸", "🌷", "💮", "🌺", "🌸"];
-    const count = isSmall ? 10 : 18;
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement("span");
-      p.className = "petal";
-      p.textContent = icons[i % icons.length];
-      p.style.left = rand(0, 100) + "%";
-      p.style.fontSize = rand(14, 26) + "px";
-      p.style.animationDuration = rand(11, 20) + "s";
-      p.style.animationDelay = -rand(0, 18) + "s";
-      p.style.setProperty("--drift", rand(-60, 80) + "px");
-      frag.appendChild(p);
-    }
-    wrap.appendChild(frag);
-  })();
+body {
+  font-family: "DM Sans", sans-serif;
+  background: #fff9fb;
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-  /* ---------- Gallery: entrance animation ---------- */
-  const gallery = $("gallery");
-  const figures = Array.from(gallery.querySelectorAll("figure"));
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+}
 
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("show");
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    figures.forEach((f, i) => {
-      f.style.transitionDelay = (i % 3) * 90 + "ms";
-      io.observe(f);
-    });
-  } else {
-    figures.forEach((f) => f.classList.add("show"));
+.topbar {
+  width: 100%;
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #f9e3ec;
+}
+
+.logo {
+  font-family: "Playfair Display", serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logo span,
+footer span {
+  color: var(--pink);
+}
+
+.music-btn {
+  background: var(--light-pink);
+  color: var(--dark-pink);
+  padding: 11px 19px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.music-btn:hover {
+  background: var(--pink);
+  color: white;
+}
+
+main {
+  width: min(1100px, 90%);
+  margin: 35px auto;
+}
+
+.section-card {
+  background: var(--white);
+  border: 1px solid #f9e4ed;
+  border-radius: 28px;
+  padding: 75px 45px;
+  margin-bottom: 35px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero {
+  min-height: 530px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #fff0f5, #fff 60%, #ffe6f0);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  color: var(--dark-pink);
+  letter-spacing: 3px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+h1,
+h2 {
+  font-family: "Playfair Display", serif;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 8vw, 82px);
+  margin: 20px 0;
+}
+
+.hero h1 span {
+  color: var(--pink);
+}
+
+.hero p,
+.section-heading p,
+.proposal-section p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.hero p {
+  font-size: 18px;
+}
+
+.primary-btn,
+.secondary-btn,
+.yes-btn,
+.no-btn {
+  padding: 14px 25px;
+  border-radius: 30px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.primary-btn,
+.yes-btn {
+  color: white;
+  background: linear-gradient(135deg, var(--pink), var(--dark-pink));
+  box-shadow: 0 8px 20px rgba(217, 79, 136, 0.22);
+}
+
+.primary-btn:hover,
+.yes-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(217, 79, 136, 0.3);
+}
+
+.hero .primary-btn {
+  margin-top: 28px;
+}
+
+.scroll-hint {
+  margin-top: 35px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.hero-decoration {
+  position: absolute;
+  right: 8%;
+  top: 10%;
+  font-size: 130px;
+  color: rgba(237, 117, 165, 0.13);
+  transform: rotate(15deg);
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-heading h2,
+.proposal-section h2,
+.final-section h2 {
+  font-size: clamp(30px, 5vw, 43px);
+  margin: 13px 0;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.photo {
+  height: 230px;
+  background: var(--light-pink);
+  border: 5px solid white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: 0.35s;
+}
+
+.photo:hover {
+  transform: translateY(-7px) rotate(-1deg);
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reasons-section {
+  background: linear-gradient(145deg, #fff, #fff2f7);
+}
+
+.reason-box {
+  max-width: 650px;
+  margin: auto;
+  padding: 35px;
+  text-align: center;
+  border: 1px solid #f7dce7;
+  background: white;
+  border-radius: 22px;
+}
+
+.reason-number {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--dark-pink);
+}
+
+.reason-box p {
+  font-family: "Playfair Display", serif;
+  font-size: 25px;
+  line-height: 1.6;
+  margin: 25px 0;
+}
+
+.reason-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondary-btn {
+  background: var(--light-pink);
+  color: var(--dark-pink);
+}
+
+.proposal-section,
+.final-section {
+  text-align: center;
+  background: linear-gradient(145deg, #fff0f5, #fff);
+}
+
+.big-heart {
+  color: var(--pink);
+  font-size: 75px;
+  margin: 18px 0;
+  animation: heartbeat 1.5s infinite;
+}
+
+.proposal-section > p {
+  max-width: 550px;
+  margin: 12px auto;
+}
+
+.proposal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px 0 15px;
+}
+
+.no-btn {
+  color: var(--dark-pink);
+  background: white;
+  border: 1px solid #f4c6d9;
+}
+
+.no-btn:hover {
+  background: var(--light-pink);
+}
+
+.no-progress {
+  font-size: 13px;
+}
+
+.no-reply {
+  min-height: 32px;
+  font-weight: 600;
+  color: var(--dark-pink) !important;
+}
+
+.final-sign {
+  display: inline-block;
+  margin-top: 25px;
+  color: var(--dark-pink);
+  font-weight: 700;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(35, 15, 25, 0.94);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.close-lightbox {
+  position: absolute;
+  right: 25px;
+  top: 15px;
+  color: white;
+  background: transparent;
+  font-size: 45px;
+}
+
+.hearts-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -30px;
+  color: #f3a5c2;
+  opacity: 0.35;
+  animation: floatUp linear forwards;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  main {
+    width: 93%;
+    margin: 18px auto;
   }
 
-  // If an image file is missing, show a pink placeholder with its filename
-  figures.forEach((f) => {
-    const img = f.querySelector("img");
-    img.addEventListener("error", () => f.classList.add("missing"));
-  });
-
-  /* ---------- Lightbox (photo + caption) ---------- */
-  const lightbox = $("lightbox");
-  const lbImg = $("lbImg");
-  const lbCap = $("lbCap");
-  let current = 0;
-  let touchX = null;
-
-  function showPhoto(i) {
-    current = (i + figures.length) % figures.length;
-    const fig = figures[current];
-    const img = fig.querySelector("img");
-    const cap = fig.querySelector("figcaption");
-    lbImg.src = img.currentSrc || img.src;
-    lbImg.alt = img.alt;
-    lbCap.textContent = (cap ? cap.textContent : "") + "  (" + (current + 1) + "/" + figures.length + ")";
-    lbImg.style.animation = "none";
-    void lbImg.offsetWidth;
-    lbImg.style.animation = "";
-  }
-  function openLightbox(i) {
-    if (figures[i].classList.contains("missing")) return;
-    showPhoto(i);
-    lightbox.hidden = false;
-    document.body.style.overflow = "hidden";
-    $("lbClose").focus();
-  }
-  function closeLightbox() {
-    lightbox.hidden = true;
-    lbImg.src = "";
-    document.body.style.overflow = "";
-  }
-  function step(dir) {
-    let i = current;
-    for (let n = 0; n < figures.length; n++) {
-      i = (i + dir + figures.length) % figures.length;
-      if (!figures[i].classList.contains("missing")) { showPhoto(i); return; }
-    }
+  .topbar {
+    padding: 14px 5%;
   }
 
-  figures.forEach((f, i) => f.addEventListener("click", () => openLightbox(i)));
-  $("lbClose").addEventListener("click", closeLightbox);
-  $("lbPrev").addEventListener("click", () => step(-1));
-  $("lbNext").addEventListener("click", () => step(1));
-  lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
-  lightbox.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-  lightbox.addEventListener("touchend", (e) => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
-    touchX = null;
-  });
-  document.addEventListener("keydown", (e) => {
-    if (!lightbox.hidden) {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") step(-1);
-      if (e.key === "ArrowRight") step(1);
-    } else if (!success.hidden && e.key === "Escape") {
-      closeSuccess();
-    }
-  });
-
-  /* ---------- Music player ---------- */
-  const music = $("bgMusic");
-  const musicBtn = $("musicBtn");
-  const musicLabel = $("musicLabel");
-
-  function setMusicUI(playing) {
-    musicBtn.classList.toggle("playing", playing);
-    musicLabel.textContent = playing ? "Pause music" : "Play music";
-    musicBtn.setAttribute("aria-label", playing ? "Pause music" : "Play music");
-  }
-  musicBtn.addEventListener("click", async () => {
-    if (music.paused) {
-      try {
-        await music.play();
-        setMusicUI(true);
-      } catch (err) {
-        setMusicUI(false);
-        musicLabel.textContent = "Add music.mp3";
-      }
-    } else {
-      music.pause();
-      setMusicUI(false);
-    }
-  });
-  music.addEventListener("pause", () => setMusicUI(false));
-  music.addEventListener("play", () => setMusicUI(true));
-
-  /* ---------- NO button: 100 unique reasons ---------- */
-  // Shuffled once so reasons never repeat before all 100 are shown
-  const order = reasons.map((_, i) => i);
-  for (let i = order.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [order[i], order[j]] = [order[j], order[i]];
+  .logo {
+    font-size: 21px;
   }
 
-  let noCount = 0;
-  let answered = false;
-
-  function playfulMove() {
-    // Small move that always keeps the button visible and tappable
-    const maxRight = isSmall ? 26 : 70;
-    const x = rand(-6, maxRight);
-    const y = rand(-8, 14);
-    noBtn.style.setProperty("--tx", x.toFixed(0) + "px");
-    noBtn.style.setProperty("--ty", y.toFixed(0) + "px");
+  .music-btn {
+    padding: 9px 14px;
+    font-size: 12px;
   }
 
-  noBtn.addEventListener("click", () => {
-    if (answered) return;
-    reasonBox.hidden = false;
-
-    if (noCount < TOTAL) {
-      noCount++;
-      const text = reasons[order[noCount - 1] % reasons.length];
-      reasonText.textContent = text;
-      counter.textContent = noCount + " / " + TOTAL;
-      bar.style.width = (noCount / TOTAL * 100) + "%";
-      bar.parentElement.setAttribute("aria-valuenow", String(noCount));
-
-      reasonText.classList.remove("swap");
-      void reasonText.offsetWidth;
-      reasonText.classList.add("swap");
-
-      if (noCount === TOTAL) {
-        finalMsg.hidden = false;
-      }
-    }
-    playfulMove();
-  });
-
-  /* ---------- YES button ---------- */
-  function makeHearts() {
-    heartsLayer.textContent = "";
-    const icons = ["💗", "🌸", "💖", "🌷", "💕", "🌺"];
-    const count = isSmall ? 22 : 36;
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < count; i++) {
-      const h = document.createElement("span");
-      h.className = "heart";
-      h.textContent = icons[i % icons.length];
-      h.style.left = rand(0, 100) + "%";
-      h.style.fontSize = rand(18, 38) + "px";
-      h.style.animationDuration = rand(5, 10) + "s";
-      h.style.animationDelay = -rand(0, 8) + "s";
-      h.style.setProperty("--drift", rand(-60, 60) + "px");
-      frag.appendChild(h);
-    }
-    heartsLayer.appendChild(frag);
+  .section-card {
+    padding: 48px 20px;
+    border-radius: 22px;
+    margin-bottom: 20px;
   }
 
-  function closeSuccess() {
-    success.hidden = true;
-    document.body.style.overflow = "";
+  .hero {
+    min-height: 450px;
   }
 
-  yesBtn.addEventListener("click", () => {
-    if (!answered) {
-      answered = true; // locks the result: NO can no longer change anything
-      card.classList.add("answered");
-      reasonBox.hidden = true;
-      finalMsg.hidden = true;
-      noBtn.disabled = true;
-      yesBtn.textContent = "You said yes 💗";
-      yesBtn.disabled = true;
-    }
-    makeHearts();
-    success.hidden = false;
-    success.scrollTop = 0;
-    document.body.style.overflow = "hidden";
-    successClose.focus();
-  });
-  successClose.addEventListener("click", closeSuccess);
-
-  /* ---------- Reply to Shourya (no backend: WhatsApp share / copy) ---------- */
-  const replyText = $("replyText");
-  const replyNote = $("replyNote");
-
-  function getReply() {
-    const t = replyText.value.trim();
-    if (!t) {
-      replyNote.textContent = "Pehle kuch likh do 💗";
-      replyText.focus();
-      return null;
-    }
-    return "Shourya ke liye, Siya ki taraf se 💗\n\n" + t;
+  .hero p {
+    font-size: 15px;
   }
 
-  $("replyWA").addEventListener("click", () => {
-    const msg = getReply();
-    if (!msg) return;
-    // Opens WhatsApp with the message ready; she picks the contact herself
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
-    replyNote.textContent = "WhatsApp khul gaya, Shourya ko select karke bhej do 💌";
-  });
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 
-  $("replyCopy").addEventListener("click", async () => {
-    const msg = getReply();
-    if (!msg) return;
-    try {
-      await navigator.clipboard.writeText(msg);
-      replyNote.textContent = "Copy ho gaya ✅ Ab kahin bhi paste karke bhej sakti ho.";
-    } catch (err) {
-      replyText.select();
-      replyNote.textContent = "Text select ho gaya, ab copy kar lo.";
-    }
-  });
-})();
+  .photo {
+    height: 170px;
+  }
+
+  .reason-box {
+    padding: 25px 15px;
+  }
+
+  .reason-box p {
+    font-size: 21px;
+  }
+
+  .proposal-buttons {
+    gap: 10px;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .yes-btn,
+  .no-btn {
+    padding: 12px 18px;
+    font-size: 13px;
+  }
+
+  .hero-decoration {
+    font-size: 90px;
+  }
+}
+
+@media (max-width: 380px) {
+  .photo {
+    height: 140px;
+  }
+
+  .section-card {
+    padding: 40px 15px;
+  }
+}
